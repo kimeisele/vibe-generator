@@ -10,6 +10,72 @@ Collection of robust, production-ready scripts for common development workflows.
 
 ## Scripts
 
+### Vibe MP3 Cutter
+
+**`python main.py`** - Download and cut MP3 files into segments with modular processor architecture.
+
+#### Features
+
+- Download MP3 from YouTube (via yt-dlp) or load local files
+- Cut audio into configurable time segments (default: 8 minutes)
+- Clean, modular architecture with UNIX-style composability
+- Extensible processor system for future features
+- Cross-platform (macOS/Linux)
+
+#### Quick Start
+
+```bash
+# Download YouTube video and cut into 8-min segments
+python main.py https://www.youtube.com/watch?v=... --cut
+
+# Cut local MP3 into 10-min segments
+python main.py ~/Music/podcast.mp3 --cut --segment-duration 600
+
+# Download only (no cutting)
+python main.py https://youtu.be/... -o ~/Music
+```
+
+#### Installation
+
+```bash
+# Requirements
+brew install ffmpeg          # macOS
+# or: sudo apt-get install ffmpeg  # Linux
+
+# Install Python dependencies
+pip install -r requirements.txt
+```
+
+#### Architecture
+
+```
+vibe_mp3_cutter/
+├── core.py                  # Base: Downloader, Processor, Pipeline
+├── downloaders/
+│   ├── youtube.py          # YouTube (yt-dlp + FFmpeg)
+│   └── local.py            # Local file loader
+└── processors/
+    ├── segment_cutter.py   # Time-based segmentation ✅
+    ├── normalizer.py       # Audio normalization (stub)
+    └── converter.py        # Format conversion (stub)
+```
+
+Clean separation of concerns - processors are pluggable and chainable.
+
+#### CLI Options
+
+```bash
+usage: main.py [-h] [-o OUTPUT] [--cut] [--segment-duration DURATION] [-v] source
+
+source                    YouTube URL or path to MP3 file
+-o, --output OUTPUT       Output directory
+--cut                     Enable segmentation
+--segment-duration DUR    Segment duration in seconds (default: 480)
+-v, --verbose            Verbose logging
+```
+
+---
+
 ### Markdown to GitHub Raw URLs
 
 **`bin/md2raw`** - Convert local file paths in markdown reports to GitHub raw URLs.
